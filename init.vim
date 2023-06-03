@@ -6,76 +6,41 @@ let R_auto_omni = 0
 
 call plug#begin(g:plugged_home)
 	Plug 'JuliaEditorSupport/julia-vim' "julia support	
-
-	Plug 'roxma/nvim-yarp'
     Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-	Plug 'hrsh7th/nvim-cmp'
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/cmp-path'
-    Plug 'hrsh7th/cmp-cmdline'
-    " main one
 
 	"UTILITIES:
-    " Language client
-    Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-    " (Optional) Multi-entry selection UI.
-    Plug 'junegunn/fzf'
-    "VIM SNIPPETS:
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
 
 	"PYTHON RELATED PLUGS:
-	Plug 'Vimjas/vim-python-pep8-indent'  "better indenting for python
-	Plug 'tweekmonster/impsort.vim'  " color and sort imports
-"	Plug 'ncm2/ncm2'  " awesome autocomplete plugin
 	Plug 'Townk/vim-autoclose' " Automatically close parenthesis, etc
 	Plug 'jeetsukumaran/vim-indentwise' " Indentation based movements
-	Plug 'bfredl/nvim-ipy'
     Plug 'lukas-reineke/indent-blankline.nvim'
 
 	"R RELATED PLUGS:
-"	Plug 'gaalcaras/ncm-R'
 	Plug 'jalvesaq/colorout' " R syntax highlighting
 	Plug 'jalvesaq/Nvim-R' "R support
-	Plug 'gaalcaras/ncm-R'
-    Plug 'jalvesaq/cmp-nvim-r' 
-	Plug 'jalvesaq/R-Vim-runtime'
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'jalvesaq/cmp-nvim-r'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
+"	Plug 'gaalcaras/ncm-R'
 
-	"THEMES:
-	Plug 'morhetz/gruvbox'
-	Plug 'betoissues/contrastneed-theme'
-	Plug 'elliothatch/burgundy.vim'
-	Plug 'yassinebridi/vim-purpura'
-	Plug 'ayu-theme/ayu-vim'
-	Plug 'ku-s-h/summerfruit256.vim'
-	Plug 'Mofiqul/dracula.nvim'
-    
-	" Required for vim 8
-    Plug 'roxma/vim-hug-neovim-rpc'
-    " Install this plugin
-  "  Plug 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
+    "Completition manager
+        " assuming you're using vim-plug: https://github.com/junegunn/vim-plug
+    Plug 'ncm2/ncm2'
+    Plug 'roxma/nvim-yarp'
 
-
-       " NOTE: you need to install completion sources to get completions. Check
+    " NOTE: you need to install completion sources to get completions. Check
     " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
     Plug 'ncm2/ncm2-bufword'
     Plug 'ncm2/ncm2-path'
-
-
+    " based on ultisnips
+    Plug 'ncm2/ncm2-ultisnips'
+    Plug 'SirVer/ultisnips'
+"THEMES:
+	Plug 'morhetz/gruvbox'
+	Plug 'betoissues/contrastneed-theme'
+	Plug 'elliothatch/burgundy.vim'
+    
 call plug#end()
+
  " IMPORTANT: :help Ncm2PopupOpen for more information
     set completeopt=noinsert,menuone,noselect
 
@@ -86,6 +51,7 @@ call plug#end()
 :set clipboard+=unnamedplus "Yanking between windows
 :set shiftwidth=4 "Intendentation
 :tnoremap <C-n> <C-\><C-n>
+imap <S-kminus> _
 
 " Python 
 syntax on                       "syntax highlighting, see :help syntax
@@ -94,7 +60,7 @@ set number                      "display line number
 set relativenumber              "display relative line numbers
 set path+=**                    "improves searching, see :help path
 set noswapfile                  "disable use of swap files
-"set wildmenu                    "completion menu
+set wildmenu                    "completion menu
 set backspace=indent,eol,start  "ensure proper backspace functionality
 set undodir=~/.cache/nvim/undo  "undo ability will persist after exiting file
 set undofile                    "see :help undodir and :help undofile
@@ -115,5 +81,13 @@ highlight ColorColumn ctermbg=9 "display ugly bright red bar at color column num
 nnoremap <C-l> :nohl<CR><C-l>:echo "Search Cleared"<CR>
 
 " When python filetype is detected, F5 can be used to execute script 
-autocmd FileType python nnoremap <buffer> <F5> :w<cr>:exec '!clear'<cr>:exec '!python3' shellescape(expand('%:p'), 1)<cr>
 let R_auto_omni = ["r",  "rmd", "rnoweb", "rhelp", "rrst"]
+let g:python3_host_prog="/home/hermit/anaconda3/bin/python3"
+
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+"IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+
+
