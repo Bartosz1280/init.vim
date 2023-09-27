@@ -14,7 +14,7 @@ call plug#begin(g:plugged_home)
     Plug 'hrsh7th/vim-vsnip'
     Plug 'hrsh7th/vim-vsnip-integ'
     Plug 'preservim/nerdtree'
-    Plug 'mhinz/vim-startify'
+    Plug 'mhinz/vim-startify' "Start-up screen
     Plug 'jbyuki/nabla.nvim' "Math LateX support
     Plug 'vim-pandoc/vim-pandoc'
     "Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -29,6 +29,13 @@ call plug#begin(g:plugged_home)
     Plug 'Townk/vim-autoclose' " Automatically close parenthesis, etc
     Plug 'jeetsukumaran/vim-indentwise' " Indentation based movements
     Plug 'lukas-reineke/indent-blankline.nvim'
+
+    "HTML CSS RELATED PLUGS:
+    Plug 'alvan/vim-closetag'
+    Plug 'andymass/vim-matchup'
+    Plug 'AndrewRadev/tagalong.vim'
+    Plug 'mattn/emmet-vim'
+
 
     "Plug 'hrsh7th/nvim-cmp'       " optional, for completion
     
@@ -50,13 +57,17 @@ call plug#begin(g:plugged_home)
     "Plug 'SirVer/ultisnips'
     
     "THEMES:
-
+    Plug 'morhetz/gruvbox'
+    Plug 'srcery-colors/srcery-vim'
+    Plug 'kooparse/vim-color-deser-night'
 call plug#end()
 
+" START UP COINFIGS:
 if (has("termguicolors"))
  set termguicolors
 endif
-
+" an example
+colorscheme gruvbox
 let g:shades_of_purple_airline = 1
 set completeopt=noinsert,menuone,noselect
 set background=dark
@@ -72,6 +83,8 @@ highlight Pmenu guibg=#080e6e
 set spelllang=en,cjk
 " Show nine spell checking candidates at most
 set spellsuggest=best,9
+" spell file
+setlocal spell spelllang=en_us
 
 syntax on    
 
@@ -93,10 +106,20 @@ filetype plugin on
 
 " CONFIGS:
 "
-" COC.NVIM CONFIGS
+" COC NVIM CONFIGS:
 let g:coc_global_extensions = ['coc-json','coc-python', 'coc-r-lsp','coc-yaml','coc-css','coc-yaml','coc-sh','coc-markdownlint']
 autocmd FileType r COCConfig
 autocmd FileType * call coc#refresh()
+
+" ALE CONFIGS:
+" let g:ale_fixers = {‘html’: [‘prettier’],‘css’: [‘stylelint’],}
+" let g:ale_linters = {‘html’: [‘htmlhint’],‘css’: [‘stylelint’],}
+let g:ale_linters_explicit = 1
+let g:ale_fix_on_save = 1
+let g:loaded_matchit = 1
+
+" TAGALONG CONFIGS:
+let g:tagalong_verbose = 1
 
 " CUTSOM FUNCTIONS:
     " Pasting empty Rmd chunk
@@ -129,7 +152,62 @@ autocmd FileType * call coc#refresh()
     endfunction
     
     command! -nargs=0 PasteRKableTableChunk call PasteRKableTableChunk()
-    
+
+    function! LoremIpsum()
+	normal! i Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    endfunction
+
+    command! -nargs=0 LoremIpsum call LoremIpsum()
+
+   function! BootstrapLink() 
+       normal! i <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+   endfunction
+
+   command! -nargs=0 BootstrapLink call BootstrapLink()
+"VIM CLOSETAG:
+" filenames like *.xml, *.html, *.xhtml, ...
+" These are the file extensions where this plugin is enabled.
+"
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
+
+" filenames like *.xml, *.xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" filetypes like xml, html, xhtml, ...
+" These are the file types where this plugin is enabled.
+"
+let g:closetag_filetypes = 'html,xhtml,phtml'
+
+" filetypes like xml, xhtml, ...
+" This will make the list of non-closing tags self-closing in the specified files.
+"
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+" integer value [0|1]
+" This will make the list of non-closing tags case-sensitive (e.g. `<Link>` will be closed while `<link>` won't.)
+"
+let g:closetag_emptyTags_caseSensitive = 1
+
+" dict
+" Disables auto-close if not in a "valid" region (based on filetype)
+"
+let g:closetag_regions = {
+    \ 'typescript.tsx': 'jsxRegion,tsxRegion',
+    \ 'javascript.jsx': 'jsxRegion',
+    \ 'typescriptreact': 'jsxRegion,tsxRegion',
+    \ 'javascriptreact': 'jsxRegion',
+    \ }
+
+" Shortcut for closing tags, default is '>'
+"
+let g:closetag_shortcut = '>'
+
+" Add > at current position without closing the current tag, default is ''
+"
+let g:closetag_close_shortcut = '<leader>>'
+
 
 " REMAPS:
 "
